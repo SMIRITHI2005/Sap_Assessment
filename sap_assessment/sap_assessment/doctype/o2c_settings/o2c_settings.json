@@ -13,7 +13,7 @@
   {
    "fieldname": "default_delivery_days",
    "fieldtype": "Int",
-   "label": "Default Delivery Date"
+   "label": "Default Delivery Days"
   },
   {
    "fieldname": "default_payment_terms",
@@ -25,7 +25,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-08-31 23:02:52.088722",
+ "modified": "2026-09-01 14:26:53.039807",
  "modified_by": "Administrator",
  "module": "Sap Assessment",
  "name": "O2C Settings",
