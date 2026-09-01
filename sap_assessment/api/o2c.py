@@ -17,6 +17,8 @@ def sales_invoice_submitted(doc, method=None):
             "grand_total": doc.grand_total
         }
     )
+
+
 @frappe.whitelist()
 def generate_delivery_note(sales_order_name):
 
@@ -140,3 +142,49 @@ def o2c_recent_sales_orders():
         "timestamp": timestamp,
         "sales_orders": sales_orders
     }
+
+import frappe
+
+
+@frappe.whitelist()
+def create_delivery_note_from_dialog(sales_order_name, delivery_date):
+
+    # Get existing Sales Order
+    sales_order = frappe.get_doc(
+        "Sales Order",
+        sales_order_name
+    )
+
+    # Make sure Sales Order is submitted
+    if sales_order.docstatus != 1:
+        frappe.throw("Sales Order must be submitted first.")
+
+    # Create new Delivery Note
+    delivery_note = frappe.new_doc("Delivery Note")
+
+    # Copy header information
+    delivery_note.customer = sales_order.customer
+    delivery_note.customer_name = sales_order.customer_name
+    delivery_note.sales_order = sales_order.name
+    delivery_note.order_date = sales_order.order_date
+    delivery_note.delivery_date = delivery_date
+
+    # Copy items
+    for row in sales_order.items:
+
+        item = delivery_note.append("items", {})
+
+        item.item = row.item
+        item.item_name = row.item_name
+        item.quantity = row.quantity
+        item.rate = row.rate
+        item.amount = row.amount
+
+    # Copy totals
+    delivery_note.total_quantity = sales_order.total_quantity
+    delivery_note.grand_total = sales_order.grand_total
+
+    # Save Delivery Note
+    delivery_note.insert()
+
+    return delivery_note.name

@@ -5,6 +5,7 @@ app_description = "Reusable SAP business process assessment application"
 app_email = "mailztosmirithi@gmail.com"
 app_license = "mit"
 
+
 doc_events = {
     "Sales Invoice": {
         "on_submit": "sap_assessment.api.o2c.sales_invoice_submitted"
