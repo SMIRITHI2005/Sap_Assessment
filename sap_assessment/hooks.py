@@ -10,7 +10,7 @@ doc_events = {
         "on_submit": "sap_assessment.api.o2c.sales_invoice_submitted"
     }
 }
-app_include_js="custom_desk.bundle.js"
+app_include_js="custom.bundle.js"
 sounds = [
     {
         "name": "o2c_submit",
@@ -21,7 +21,8 @@ scheduler_events = {
     "daily": [
         "sap_assessment.tasks.daily_maintenance"
     ]
-}# Apps
+}
+# Apps
 # ------------------
 
 # required_apps = []

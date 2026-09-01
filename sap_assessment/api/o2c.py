@@ -108,3 +108,35 @@ def o2c_sales_order_report():
         )
 
     return results
+@frappe.whitelist()
+def o2c_recent_sales_orders():
+
+    sales_orders = frappe.get_list(
+        "Sales Order",
+        fields=[
+            "name",
+            "owner",
+            "customer",
+            "customer_name",
+            "order_date",
+            "grand_total"
+        ],
+        order_by="creation desc",
+        limit_page_length=5
+    )
+
+    for order in sales_orders:
+        owner_email = frappe.db.get_value(
+            "User",
+            order.get("owner"),
+            "email"
+        )
+
+        order["owner_email"] = owner_email
+
+    timestamp = frappe.utils.now()
+
+    return {
+        "timestamp": timestamp,
+        "sales_orders": sales_orders
+    }
