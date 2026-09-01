@@ -6,19 +6,26 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "section_break_zwtl"
+  "default_delivery_days",
+  "default_payment_terms"
  ],
  "fields": [
   {
-   "fieldname": "section_break_zwtl",
-   "fieldtype": "Section Break"
+   "fieldname": "default_delivery_days",
+   "fieldtype": "Int",
+   "label": "Default Delivery Date"
+  },
+  {
+   "fieldname": "default_payment_terms",
+   "fieldtype": "Int",
+   "label": "Default Payment Terms"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-08-30 23:28:24.788949",
+ "modified": "2026-08-31 23:02:52.088722",
  "modified_by": "Administrator",
  "module": "Sap Assessment",
  "name": "O2C Settings",
