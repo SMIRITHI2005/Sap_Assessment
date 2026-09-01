@@ -1,27 +1,33 @@
-import dayjs from "dayjs";
-
 console.log("=== O2C Asset Bundle ===");
 
-const today = dayjs();
+const today = new Date();
+const formatDate = (date) => date.toISOString().slice(0, 10);
+const formatDateTime = (date) =>
+    date.toISOString().slice(0, 19).replace("T", " ");
+const addDays = (date, days) => {
+    const nextDate = new Date(date);
+    nextDate.setDate(nextDate.getDate() + days);
+    return nextDate;
+};
 
 console.log(
     "O2C Current Date:",
-    today.format("YYYY-MM-DD")
+    formatDate(today)
 );
 
 console.log(
     "O2C Current Date & Time:",
-    today.format("YYYY-MM-DD HH:mm:ss")
+    formatDateTime(today)
 );
 
 console.log(
     "Expected Delivery Date Example:",
-    today.add(7, "day").format("YYYY-MM-DD")
+    formatDate(addDays(today, 7))
 );
 
 console.log(
     "Payment Due Date Example:",
-    today.add(30, "day").format("YYYY-MM-DD")
+    formatDate(addDays(today, 30))
 );
 
 
