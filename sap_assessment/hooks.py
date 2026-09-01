@@ -4,9 +4,10 @@ app_publisher = "Smirithi"
 app_description = "Reusable SAP business process assessment application"
 app_email = "mailztosmirithi@gmail.com"
 app_license = "mit"
+
 doc_events = {
     "Sales Invoice": {
-        "on_submit": "sap_assessment.api.sales_invoice_submitted"
+        "on_submit": "sap_assessment.api.o2c.sales_invoice_submitted"
     }
 }
 app_include_js="custom_desk.bundle.js"

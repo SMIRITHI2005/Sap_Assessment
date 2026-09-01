@@ -1,6 +1,22 @@
 import frappe
 
 
+
+
+def sales_invoice_submitted(doc, method=None):
+    frappe.logger("o2c").info(
+        f"Sales Invoice {doc.name} submitted for customer {doc.customer}"
+    )
+
+    frappe.publish_realtime(
+        "o2c_sales_invoice_submitted",
+        {
+            "doctype": "Sales Invoice",
+            "name": doc.name,
+            "customer": doc.customer,
+            "grand_total": doc.grand_total
+        }
+    )
 @frappe.whitelist()
 def generate_delivery_note(sales_order_name):
 
@@ -40,3 +56,55 @@ def generate_delivery_note(sales_order_name):
     delivery_note.insert()
 
     return delivery_note.name
+
+@frappe.whitelist()
+def o2c_sales_order_report():
+
+    SalesOrder = frappe.qb.DocType("Sales Order")
+    Customer = frappe.qb.DocType("Customer")
+
+    # Query Builder
+    query = (
+    frappe.qb.from_(SalesOrder)
+    .join(Customer)
+    .on(SalesOrder.customer == Customer.name)
+    .select(
+        SalesOrder.name,
+        SalesOrder.customer,
+        Customer.customer_name,
+        SalesOrder.order_date,
+        SalesOrder.grand_total,
+        SalesOrder.api_processed
+    )
+    .where(
+    (SalesOrder.docstatus == 1)
+    & (SalesOrder.name == "SO-00002")
+)
+    
+    .limit(10)
+)
+
+    results = query.run(as_dict=True)
+
+    if not results:
+        return []
+
+    # Document API
+    first_order = frappe.get_doc(
+        "Sales Order",
+        results[0]["name"]
+    )
+
+    first_order.api_processed = 1
+    first_order.save()
+
+    # Database API
+    for row in results:
+        frappe.db.set_value(
+            "Sales Order",
+            row["name"],
+            "api_processed",
+            1
+        )
+
+    return results
