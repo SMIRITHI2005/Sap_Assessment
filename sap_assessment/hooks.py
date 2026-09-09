@@ -23,6 +23,9 @@ scheduler_events = {
         "sap_assessment.tasks.daily_maintenance"
     ]
 }
+fixtures = [
+    "Client Script"
+]
 # Apps
 # ------------------
 
