@@ -4,69 +4,33 @@
 
     <p>
         <strong>Report Period:</strong>
-        <%= filters.from_date %>
+        {%= filters.from_date %}
         to
-        <%= filters.to_date %>
+        {%= filters.to_date %}
     </p>
 
-    <table style="width: 100%; border-collapse: collapse;">
-
+    <table class="table table-bordered">
         <thead>
             <tr>
-                <th style="border: 1px solid #ddd; padding: 8px;">
-                    Invoice ID
-                </th>
-
-                <th style="border: 1px solid #ddd; padding: 8px;">
-                    Customer
-                </th>
-
-                <th style="border: 1px solid #ddd; padding: 8px;">
-                    Posting Date
-                </th>
-
-                <th style="border: 1px solid #ddd; padding: 8px;">
-                    Invoice Amount
-                </th>
-
-                <th style="border: 1px solid #ddd; padding: 8px;">
-                    Status
-                </th>
+                <th>Invoice ID</th>
+                <th>Customer</th>
+                <th>Invoice Date</th>
+                <th>Invoice Amount</th>
+                <th>Status</th>
             </tr>
         </thead>
 
         <tbody>
-
-            <% for (var i = 0; i < data.length; i++) { %>
-
+            {% for(var i = 0; i < data.length; i++) { %}
                 <tr>
-
-                    <td style="border: 1px solid #ddd; padding: 8px;">
-                        <%= data[i].invoice_id %>
-                    </td>
-
-                    <td style="border: 1px solid #ddd; padding: 8px;">
-                        <%= data[i].customer %>
-                    </td>
-
-                    <td style="border: 1px solid #ddd; padding: 8px;">
-                        <%= dateutil.str_to_user(data[i].posting_date) %>
-                    </td>
-
-                    <td style="border: 1px solid #ddd; padding: 8px;">
-                        <%= format_money(data[i].invoice_amount) %>
-                    </td>
-
-                    <td style="border: 1px solid #ddd; padding: 8px;">
-                        <%= data[i].status %>
-                    </td>
-
+                    <td>{%= data[i].invoice_id %}</td>
+                    <td>{%= data[i].customer %}</td>
+                    <td>{%= frappe.datetime.str_to_user(data[i].invoice_date) %}</td>
+                    <td>{%= format_money(data[i].invoice_amount) %}</td>
+                    <td>{%= data[i].status %}</td>
                 </tr>
-
-            <% } %>
-
+            {% } %}
         </tbody>
-
     </table>
 
 </div>
