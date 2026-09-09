@@ -59,6 +59,7 @@ def generate_delivery_note(sales_order_name):
 
     return delivery_note.name
 
+
 @frappe.whitelist()
 def o2c_sales_order_report():
 
