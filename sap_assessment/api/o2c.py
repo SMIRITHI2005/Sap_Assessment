@@ -1,6 +1,7 @@
 import frappe
 
 
+@frappe.whitelist(allow_guest=True)
 
 
 def sales_invoice_submitted(doc, method=None):
@@ -19,7 +20,7 @@ def sales_invoice_submitted(doc, method=None):
     )
 
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def generate_delivery_note(sales_order_name):
 
     sales_order = frappe.get_doc(
@@ -60,7 +61,7 @@ def generate_delivery_note(sales_order_name):
     return delivery_note.name
 
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def o2c_sales_order_report():
 
     SalesOrder = frappe.qb.DocType("Sales Order")
@@ -111,7 +112,7 @@ def o2c_sales_order_report():
         )
 
     return results
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def o2c_recent_sales_orders():
 
     sales_orders = frappe.get_list(
@@ -147,7 +148,7 @@ def o2c_recent_sales_orders():
 import frappe
 
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def create_delivery_note_from_dialog(sales_order_name, delivery_date):
 
     # Get existing Sales Order
@@ -189,3 +190,15 @@ def create_delivery_note_from_dialog(sales_order_name, delivery_date):
     delivery_note.insert()
 
     return delivery_note.name
+
+import frappe
+from frappe.rate_limiter import rate_limit
+
+
+@frappe.whitelist(allow_guest=True)
+@rate_limit(limit=5, seconds=60)
+def limited_greeting():
+    logger = frappe.logger()
+    logger.info("Endpoint called.")
+
+    frappe.response["message"] = "Hello, Rate Limited World!"
